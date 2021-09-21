@@ -24,19 +24,16 @@ pipeline {
             }
         }
         stage('build') {
-            agent {
-                node {
-                    label 'Jenkins-Agent-al2-x64-m5xlarge'
-                }
-            }
+            agent { label 'Jenkins-Agent-al2-x64-c54xlarge-Docker-Host' }
             stages {
                 stage('build-snapshots') {
                     environment {
                         SNAPSHOT_REPO_URL = "https://aws.oss.sonatype.org/content/repositories/snapshots/"
                     }
                     agent {
-                        node {
-                            label 'Jenkins-Agent-al2-x64-m5xlarge'
+                        docker {
+                            label 'Jenkins-Agent-al2-x64-c54xlarge-Docker-Host'  // both label and image
+                            image 'opensearchstaging/ci-runner:integtest-al2-1.0.0'
                         }
                     }
                     steps {
